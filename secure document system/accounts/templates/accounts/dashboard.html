@@ -1,0 +1,62 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - Secure Signup{% endblock %}
+
+{% block content %}
+<div class="dashboard-container landscape">
+    <div class="dashboard-card glassy">
+        <div class="dashboard-header hero">
+            <div>
+                <p class="pill success">Active</p>
+                <h1 class="dashboard-title">Secure Documents</h1>
+                <p class="dashboard-subtitle">All uploaded proofs in one horizontal strip.</p>
+            </div>
+            <div class="hero-badge">
+                <span class="badge-icon">🛡️</span>
+                <div>
+                    <p class="badge-title">Gov-style layout</p>
+                    <p class="badge-meta">CSRF • Hashed Passwords • Media Secured</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="doc-strip">
+            <div class="doc-card wide">
+                <div class="doc-label">ID Document</div>
+                {% if user.id_document_photo %}
+                    <img src="{{ user.id_document_photo.url }}" alt="ID document" class="doc-thumb wide-thumb">
+                {% else %}
+                    <p class="doc-placeholder">ID photo not uploaded</p>
+                {% endif %}
+            </div>
+            <div class="doc-card wide">
+                <div class="doc-label">PAN / Tax</div>
+                {% if user.pan_document_photo %}
+                    <img src="{{ user.pan_document_photo.url }}" alt="PAN document" class="doc-thumb wide-thumb">
+                {% else %}
+                    <p class="doc-placeholder">PAN photo not uploaded</p>
+                {% endif %}
+            </div>
+            <div class="doc-card wide">
+                <div class="doc-label">Address Proof</div>
+                {% if user.address_proof_photo %}
+                    <img src="{{ user.address_proof_photo.url }}" alt="Address proof" class="doc-thumb wide-thumb">
+                {% else %}
+                    <p class="doc-placeholder">Address proof not uploaded</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="dashboard-actions stacked">
+            <a href="{% url 'accounts:documents' %}" class="secondary-btn glow">
+                <span>View / Manage Documents</span>
+            </a>
+            <a href="{% url 'accounts:logout' %}" class="logout-btn glow">
+                <span>Logout Securely</span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

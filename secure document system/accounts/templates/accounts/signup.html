@@ -1,0 +1,120 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+
+{% block title %}Sign Up - Secure Signup{% endblock %}
+
+{% block content %}
+<div class="form-container signup-container">
+    <div class="form-card">
+        <div class="form-header">
+            <h1 class="form-title">Create Account</h1>
+            <p class="form-subtitle">Join us today and get started</p>
+        </div>
+        
+        <form method="post" class="auth-form" id="signupForm" novalidate>
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <div class="input-wrapper">
+                    {{ form.full_name }}
+                    <span class="input-focus-line"></span>
+                </div>
+                {% if form.full_name.errors %}
+                    <div class="error-message shake">
+                        {{ form.full_name.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <div class="input-wrapper">
+                    {{ form.username }}
+                    <span class="input-focus-line"></span>
+                </div>
+                {% if form.username.errors %}
+                    <div class="error-message shake">
+                        {{ form.username.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <div class="input-wrapper">
+                    {{ form.email }}
+                    <span class="input-focus-line"></span>
+                </div>
+                {% if form.email.errors %}
+                    <div class="error-message shake">
+                        {{ form.email.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <div class="input-wrapper">
+                    {{ form.password1 }}
+                    <span class="input-focus-line"></span>
+                    <button type="button" class="toggle-password" data-target="id_password1">👁️</button>
+                </div>
+                {% if form.password1.errors %}
+                    <div class="error-message shake">
+                        {{ form.password1.errors.0 }}
+                    </div>
+                {% endif %}
+                <div class="password-requirements">
+                    <small>Password must contain: uppercase, lowercase, number, special character (min 8 chars)</small>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="input-wrapper">
+                    {{ form.password2 }}
+                    <span class="input-focus-line"></span>
+                    <button type="button" class="toggle-password" data-target="id_password2">👁️</button>
+                </div>
+                {% if form.password2.errors %}
+                    <div class="error-message shake">
+                        {{ form.password2.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <button type="submit" class="submit-btn">
+                <span class="btn-text">Sign Up</span>
+                <span class="btn-loader"></span>
+            </button>
+        </form>
+        
+        <div class="form-footer">
+            <p>Already have an account? <a href="{% url 'accounts:login' %}" class="link">Login here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Client-side validation for signup form
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+        const password1 = document.getElementById('id_password1').value;
+        const password2 = document.getElementById('id_password2').value;
+        
+        if (password1 !== password2) {
+            e.preventDefault();
+            showError('Passwords do not match!');
+            return false;
+        }
+        
+        // Password strength validation
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+        if (!passwordRegex.test(password1)) {
+            e.preventDefault();
+            showError('Password does not meet requirements!');
+            return false;
+        }
+    });
+</script>
+{% endblock %}
+
+
+

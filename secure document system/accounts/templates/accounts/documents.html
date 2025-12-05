@@ -1,0 +1,60 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+
+{% block title %}Documents - Secure Signup{% endblock %}
+
+{% block content %}
+<div class="dashboard-container landscape">
+    <div class="dashboard-card glassy">
+        <div class="dashboard-header hero">
+            <div>
+                <p class="pill success">Active</p>
+                <h1 class="dashboard-title">Documents</h1>
+                <p class="dashboard-subtitle">View, download, or delete your uploaded proofs.</p>
+            </div>
+            <div class="hero-badge">
+                <span class="badge-icon">📂</span>
+                <div>
+                    <p class="badge-title">Managed Storage</p>
+                    <p class="badge-meta">User-specific paths • Validated uploads</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="doc-strip">
+            {% for doc in docs %}
+            <div class="doc-card wide">
+                <div class="doc-label">{{ doc.label }}</div>
+                {% if doc.field %}
+                    <img src="{{ doc.field.url }}" alt="{{ doc.label }}" class="doc-thumb wide-thumb">
+                    <div class="doc-actions">
+                        <a href="{{ doc.field.url }}" class="secondary-btn small" download>Download</a>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="doc_type" value="{{ doc.key }}">
+                            <button type="submit" class="logout-btn small danger">Delete</button>
+                        </form>
+                    </div>
+                {% else %}
+                    <p class="doc-placeholder">Not uploaded</p>
+                    <div class="doc-actions">
+                        <a href="{% url 'accounts:profile' %}" class="secondary-btn small">Upload</a>
+                    </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="dashboard-actions stacked">
+            <a href="{% url 'accounts:dashboard' %}" class="secondary-btn glow">
+                <span>Back to Dashboard</span>
+            </a>
+            <a href="{% url 'accounts:logout' %}" class="logout-btn glow">
+                <span>Logout Securely</span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

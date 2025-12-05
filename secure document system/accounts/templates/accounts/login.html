@@ -1,0 +1,77 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+
+{% block title %}Login - Secure Signup{% endblock %}
+
+{% block content %}
+<div class="form-container login-container">
+    <div class="form-card">
+        <div class="form-header">
+            <h1 class="form-title">Welcome Back</h1>
+            <p class="form-subtitle">Login to your account</p>
+        </div>
+        
+        <form method="post" class="auth-form" id="loginForm" novalidate>
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <div class="input-wrapper">
+                    {{ form.username }}
+                    <span class="input-focus-line"></span>
+                </div>
+                {% if form.non_field_errors %}
+                    <div class="error-message shake">
+                        {{ form.non_field_errors.0 }}
+                    </div>
+                {% endif %}
+                {% if form.username.errors %}
+                    <div class="error-message shake">
+                        {{ form.username.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <div class="input-wrapper">
+                    {{ form.password }}
+                    <span class="input-focus-line"></span>
+                    <button type="button" class="toggle-password" data-target="id_password">👁️</button>
+                </div>
+                {% if form.password.errors %}
+                    <div class="error-message shake">
+                        {{ form.password.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <button type="submit" class="submit-btn">
+                <span class="btn-text">Login</span>
+                <span class="btn-loader"></span>
+            </button>
+        </form>
+        
+        <div class="form-footer">
+            <p>Don't have an account? <a href="{% url 'accounts:signup' %}" class="link">Sign up here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Client-side validation for login form
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        const username = document.getElementById('id_username').value.trim();
+        const password = document.getElementById('id_password').value;
+        
+        if (!username || !password) {
+            e.preventDefault();
+            showError('Please fill in all fields!');
+            return false;
+        }
+    });
+</script>
+{% endblock %}
+
+
+

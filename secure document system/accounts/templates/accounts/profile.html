@@ -1,0 +1,44 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+
+{% block title %}Profile - Secure Signup{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-card glassy">
+        <div class="form-header">
+            <h1 class="form-title">Secure Profile</h1>
+            <p class="form-subtitle">Manage your document and identity details safely.</p>
+        </div>
+
+        <form method="post" class="auth-form" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        {{ field }}
+                        <span class="input-focus-line"></span>
+                    </div>
+                    {% if field.errors %}
+                        <div class="error-message shake">
+                            {{ field.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="submit-btn">
+                <span class="btn-text">Save Securely</span>
+                <span class="btn-loader"></span>
+            </button>
+        </form>
+
+        <div class="form-footer">
+            <p><a href="{% url 'accounts:dashboard' %}" class="link">Back to dashboard</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
